@@ -6,19 +6,17 @@
 (define (improve guess x)
   (average guess (/ x guess)))
 
-(define (square x)
-  (* x x))
+(define (good-enough? old-guess guess)
+  (< (abs (- 1 (/ old-guess guess))) 0.000001))
 
-(define (good-enough? guess x)
-  (< (abs (- 1 (/ (square guess) x))) 0.00001))
-
-(define (sqrt-iter guess x)
-  (if (good-enough? guess x)
+(define (sqrt-iter old-guess guess x)
+  (if (good-enough? old-guess guess)
       guess
-      (sqrt-iter (improve guess x)
+      (sqrt-iter guess
+                 (improve guess x)
                  x)))
 (define (sqrt x)
-  (sqrt-iter 1.0 x))
+  (sqrt-iter 1.0 x x))
 
 (module+ test
   (require rackunit)
@@ -26,6 +24,6 @@
   (test-case
    "sqrt(x) by Newton method"
 
-   (check-= (sqrt 10000) 100.0 0.00001 "I work")
+   (check-= (sqrt 10000.0) 100.0 0.00001 "I work")
    (check-= (sqrt 0.0004) 0.02 0.000000001 "I work")
-   (check-= (sqrt 9000000) 3000 0.00001 "I work")))
+   (check-= (sqrt 9000000.0) 3000 0.00001 "I work")))
