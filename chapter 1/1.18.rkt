@@ -9,16 +9,16 @@
 (define (halve a)
   (/ a 2))
 
-(define (mult a b x)
-  (cond ((= b 0) x)
-        ((even? b) (mult (double a) (halve b) x))
-        (else (mult (double a) (halve (- b 1)) (+ x a)))))
+(define (mult a b count)
+  (cond ((= b 0) count)
+        ((even? b) (mult (double a) (halve b) count))
+        (else (mult (double a) (halve (- b 1)) (+ count a)))))
 
 (module+ test
   (require rackunit)
 
   (test-case
-   "Multiply a and b"
+   "Multiply a and b by iteration in logarithmic complexity"
 
    (check-equal? (* 2 0) 0)
    (check-equal? (* 2 1) 2)
